@@ -24,8 +24,9 @@ Display 36/700 · Heading 24/700 · Body 16/400, line 1.5 · Small 14/500
 ## Components
 - Button: primary (filled), secondary (outlined), danger (outlined red). One primary button per screen.
 - Status badge: pill. draft=muted, awaiting_funding=warning, funded=primary, evaluating=primary,
-  revision_requested=warning, ready_for_decision=warning, released=success, voided=danger.
-- Escrow banner: icon, "Funds held in escrow: $X", escrow background. Shown while status is funded to ready_for_decision.
+  revision_requested=warning, ready_for_decision=warning, released=success, refunded=danger.
+- Escrow banner: icon, "Held in escrow: $X", escrow background. Shown while status is funded to ready_for_decision.
+- Demo tag: small muted "Simulated funds" label next to every balance and amount.
 - Rubric row: icon (check = met, half = partial, cross = not met), item text, AI reason underneath in muted.
 - Timeline: vertical list of events (funded, submitted, AI verdict, released).
 - Empty state: one sentence and one button.

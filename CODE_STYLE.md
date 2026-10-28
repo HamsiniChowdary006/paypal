@@ -14,14 +14,14 @@ Every file should read like one person wrote it.
 
 ## Do
 - Type hints on every function and return value
-- Pydantic models for anything crossing a boundary (requests, LLM output, PayPal payloads you rely on)
+- Pydantic models for anything crossing a boundary (requests, LLM output)
 - One job per function. Over 40 lines? Split it.
 - Return early instead of nesting ifs
-- Raise small custom errors (InvalidTransition, PayPalError, JudgeOutputError), handle them in routes
+- Raise small custom errors (InvalidTransition, InsufficientFunds, JudgeOutputError), handle them in routes
 - Comments explain why, not what
 
 ## Don't
-- Call the database, PayPal or the LLM from route files directly
+- Call the database or the LLM from route files directly
 - Leave print() or unused imports behind
 - Write files over 300 lines
 - Copy the same code twice. Extract it.

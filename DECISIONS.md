@@ -5,7 +5,7 @@ Status "Proposed" means suggested but not yet confirmed by the owner.
 
 ## 000 · Build AI-judged escrow for freelancers · 24 Oct 2026
 Status: Accepted
-Why: relatable problem, clean end-to-end demo, PayPal authorize/capture is central, AI does a real job.
+Why: relatable problem, clean end-to-end demo, the AI does a real job.
 Trade-off: AI judging can be wrong, so a human override is built in.
 
 ## 001 · FastAPI + Jinja2 + HTMX, no separate frontend · 24 Oct 2026
@@ -18,17 +18,14 @@ Status: Proposed
 Why: zero setup. Trade-off: data can reset on free hosting restarts, fine for a demo.
 
 ## 003 · PayPal Orders v2 with intent AUTHORIZE, capture on release · 24 Oct 2026
-Status: Proposed
-Why: authorization holds the funds without moving them, which is the escrow behaviour.
-Trade-off: 3-day honor period (29 days with reauthorization). Platform account is the merchant, then Payouts to the freelancer, because multi-party payments need a partner setup we don't have.
+Status: Replaced by 009
 
 ## 004 · Call PayPal with httpx, no SDK · 24 Oct 2026
-Status: Proposed
-Why: the calls are few and the smoke script doubles as documentation.
+Status: Replaced by 009
 
 ## 005 · GLM through an OpenAI-compatible endpoint, configurable by env · 24 Oct 2026
-Status: Accepted (open-source model); provider Proposed
-Why: free tier and open weights. Default Z.ai glm-4.7-flash; swap to OpenRouter or a local model by changing LLM_BASE_URL and LLM_MODEL.
+Status: Accepted (open-source models); provider Proposed
+Why: free tier and open weights. Default Z.ai glm-4.7-flash. Local Qwen via Ollama (OpenAI-compatible at /v1) works by changing LLM_BASE_URL and LLM_MODEL.
 Trade-off: free tier has low concurrency and can be slow or unavailable, so calls are sequential with retries.
 
 ## 006 · The code computes the verdict, the AI only scores rubric items · 24 Oct 2026
@@ -42,7 +39,17 @@ Why: keeps the judge reliable and the scope finishable.
 
 ## 008 · Demo-only login (username picker) · 24 Oct 2026
 Status: Proposed
-Why: auth is not the point of the hackathon. Documented as a known limit in SECURITY.md.
+Why: auth is not the point of this project. Documented as a known limit in SECURITY.md.
+
+## 009 · Standalone project with a simulated ledger, no PayPal · 28 Oct 2026
+Status: Accepted
+Why: owner chose a standalone portfolio project. The AI judge is the main attraction, so payments stay simple.
+Trade-off: not eligible for the PayPal hackathon. Money is simulated, so the README must say so. Replaces 003 and 004.
+
+## 010 · Measure the judge with a labeled sample set and an eval script · 28 Oct 2026
+Status: Proposed
+Why: a measured accuracy and false-release rate is the strongest part of the portfolio story.
+Trade-off: writing good samples takes time. Start with 10 briefs and grow.
 
 ## Template for a new decision
 ## 00N · Title · Date

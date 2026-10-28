@@ -7,7 +7,7 @@ SQLite via SQLAlchemy. Primary keys are text UUIDs.
 id text, primary key
 name text
 role text ('client' or 'freelancer')
-paypal_email text   (sandbox personal account email, used for payouts)
+balance_cents int   (simulated money)
 
 ## jobs
 id text, primary key
@@ -16,8 +16,8 @@ freelancer_id text -> users
 title text
 brief text
 amount_cents int
-currency text, default 'USD'
-status text ('draft', 'awaiting_funding', 'funded', 'submitted', 'evaluating', 'revision_requested', 'ready_for_decision', 'released', 'voided', 'cancelled')
+escrow_cents int, default 0   (amount currently held for this job)
+status text ('draft', 'awaiting_funding', 'funded', 'submitted', 'evaluating', 'revision_requested', 'ready_for_decision', 'released', 'refunded', 'cancelled')
 auto_release bool, default false
 revisions_used int, default 0
 max_revisions int, default 2
@@ -41,33 +41,31 @@ created_at timestamp
 ## evaluations
 id text, primary key
 submission_id text -> submissions
-items_json text   (per rubric item: status met/partial/not_met, reason, confidence)
+items_json text   (per rubric item: status met/partial/not_met, reason, evidence quote, confidence)
 verdict text ('pass', 'fail', 'needs_review')
 feedback text     (what to fix, shown to the freelancer)
 model text        (model name used)
 raw_output text   (raw LLM text, for debugging)
 created_at timestamp
 
-## payments
+## ledger_entries
 id text, primary key
-job_id text -> jobs, unique
-paypal_order_id text
-authorization_id text
-capture_id text
-payout_batch_id text, null if payout is simulated
-payout_mode text ('paypal' or 'ledger')
-state text ('created', 'authorized', 'captured', 'voided', 'paid_out', 'failed')
+job_id text -> jobs
+kind text ('fund', 'release', 'refund')
+from_user_id text -> users, null when from escrow
+to_user_id text -> users, null when to escrow
+amount_cents int
 created_at timestamp
 
 ## events
 id text, primary key
 job_id text -> jobs
-kind text (e.g. 'funded', 'submitted', 'ai_verdict', 'released', 'voided', 'override')
+kind text (e.g. 'created', 'funded', 'submitted', 'ai_verdict', 'released', 'refunded', 'override')
 detail text
 created_at timestamp
 
 ## Rules
-- Amounts are integer cents. Convert to a string like "25.00" only when calling PayPal.
-- One payments row per job.
-- events is append-only. It is the audit log shown on the job page.
-- Schema is created from models.py on startup (no migration tool for the hackathon). Update this file with any model change.
+- Amounts are integer cents. Never floats.
+- Balances and escrow change only through ledger.py, together with a ledger_entries row, in one transaction.
+- ledger_entries and events are append-only.
+- Schema is created from models.py on startup (no migration tool). Update this file with any model change.
